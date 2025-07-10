@@ -37,7 +37,7 @@ export class JobQueueService {
     } finally {
       this.processing = false;
       if (this.queue.length > 0) {
-        setTimeout(() => void this.processNext(), 0);
+        setTimeout(() => void this.processNext(), 500);
       }
     }
   }
