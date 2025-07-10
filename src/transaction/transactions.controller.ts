@@ -3,7 +3,7 @@ import { TransactionService } from './transaction.service';
 import { PersonService } from '../person/person.service';
 import { JobQueueService } from '../job-queue/job-queue.service';
 import { TransactionStatus } from './transaction.entity';
-import { TransactionCreateManyDto } from './transaction-create-many.dto';
+import { TransactionCreateManyDto } from './dto/transaction-create-many.dto';
 import { TransactionResponseDto } from './dto/transaction-response.dto';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
 
