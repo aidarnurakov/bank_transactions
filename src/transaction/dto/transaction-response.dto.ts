@@ -15,8 +15,8 @@ export class TransactionResponseDto {
   status: 'Pending' | 'Success' | 'Failed';
 
   @ApiProperty({ example: '2024-01-01T12:00:00.000Z', nullable: true })
-  processedAt: string | null;
+  processedAt: Date | null;
 
   @ApiProperty({ example: '2024-01-01T11:59:00.000Z' })
-  createdAt: string;
-} 
+  createdAt: Date;
+}

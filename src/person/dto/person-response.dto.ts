@@ -9,4 +9,4 @@ export class PersonResponseDto {
 
   @ApiProperty({ example: '900.00' })
   balance: string;
-} 
+}

@@ -1,7 +1,5 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { TransactionService } from '../transaction/transaction.service';
-import { PersonService } from '../person/person.service';
-import { BankService } from '../bank/bank.service';
 import { DataSource } from 'typeorm';
 import { Person } from '../person/person.entity';
 import { Bank } from '../bank/bank.entity';
@@ -20,8 +18,6 @@ export class JobQueueService {
 
   constructor(
     private readonly txService: TransactionService,
-    private readonly personService: PersonService,
-    private readonly bankService: BankService,
     private readonly dataSource: DataSource,
   ) {}
 
