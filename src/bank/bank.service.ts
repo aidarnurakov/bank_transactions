@@ -10,7 +10,7 @@ export class BankService {
     private readonly bankRepo: Repository<Bank>,
   ) {}
 
-  async getBank(): Promise<Bank | null> {
+  async getBank(): Promise<Bank> {
     const bank = await this.bankRepo.findOne({ where: {} });
     if (!bank) {
       throw new NotFoundException('Bank not found');

@@ -4,7 +4,10 @@ import { PersonService } from '../person/person.service';
 import { JobQueueService } from '../job-queue/job-queue.service';
 import { TransactionStatus } from './transaction.entity';
 import { TransactionCreateManyDto } from './transaction-create-many.dto';
+import { TransactionResponseDto } from './dto/transaction-response.dto';
+import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
 
+@ApiTags('transactions')
 @Controller('transactions')
 export class TransactionsController {
   constructor(
@@ -14,9 +17,28 @@ export class TransactionsController {
   ) {}
 
   @Post()
+  @ApiOperation({ summary: 'Create multiple transactions' })
+  @ApiBody({
+    type: TransactionCreateManyDto,
+    examples: {
+      default: {
+        value: {
+          transactions: [
+            { personId: 1, amount: '100.00' },
+            { personId: 2, amount: '50.00' },
+          ],
+        },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Transactions created',
+    type: [TransactionResponseDto],
+  })
   async createMany(
     @Body() body: TransactionCreateManyDto,
-  ) {
+  ): Promise<{ id: number; status: string }[]> {
     const results: { id: number; status: TransactionStatus }[] = [];
     for (const t of body.transactions) {
       const person = await this.personService.getById(t.personId);
@@ -36,7 +58,13 @@ export class TransactionsController {
   }
 
   @Get()
-  async getRecent() {
+  @ApiOperation({ summary: 'Get recent transactions' })
+  @ApiResponse({
+    status: 200,
+    description: 'List of recent transactions',
+    type: [TransactionResponseDto],
+  })
+  async getRecent(): Promise<TransactionResponseDto[]> {
     return this.txService.getRecent();
   }
 }

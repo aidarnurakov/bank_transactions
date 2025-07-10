@@ -96,3 +96,76 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+# Task — Simple Bank/Transaction API (NestJS)
+
+## Overview
+
+This is a sample NestJS application implementing a simple banking system with support for users (Person), a bank (Bank), and transactions (Transaction).
+The system includes a transaction processing queue (JobQueue) that asynchronously updates balances.
+
+**Main entities:**
+- **Bank** — a single bank with a balance.
+- **Person** — a user with a balance.
+- **Transaction** — a money transfer from a user to the bank.
+- **JobQueue** — a queue that asynchronously processes transactions (deducts money from the user, credits the bank).
+
+## Setup
+
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+2. Start PostgreSQL using docker-compose:
+   ```bash
+   docker-compose up -d
+   ```
+3. Check or change environment variables for DB connection (defaults: `localhost:5432`, user/password — postgres/postgres, database — test).
+4. Start the application:
+   ```bash
+   npm run start:dev
+   ```
+5. To run tests:
+   ```bash
+   npm run test
+   ```
+
+## API
+
+- **GET /persons** — list all users.
+- **GET /bank** — get the bank's balance.
+- **GET /transactions** — get the latest 20 transactions.
+- **POST /transactions** — create a batch of transactions:
+  ```json
+  {
+    "transactions": [
+      { "personId": 1, "amount": "100.00" },
+      { "personId": 2, "amount": "50.00" }
+    ]
+  }
+  ```
+  Returns an array with the id and status of each transaction.
+
+## Swagger / OpenAPI
+
+Interactive API documentation is available at [http://localhost:3000/api](http://localhost:3000/api) after you start the app. All endpoints and DTOs are fully described there.
+
+## Design Choices
+
+- **Modules are split into folders** (`bank/`, `person/`, `transaction/`, `job-queue/`) for maintainability and scalability.
+- **DTOs** are used for input validation (e.g., `TransactionCreateManyDto` for POST /transactions).
+- **TypeORM** is used for PostgreSQL, all entities are described with decorators.
+- **JobQueue** is a simple in-memory queue to demonstrate async processing (could be replaced with Redis or something more robust).
+- **Seeder** creates the bank and users on startup if they don't exist.
+
+## Alternative approaches
+
+- Microservices or event-driven architecture could be used for the queue, but for a demo, in-memory is enough.
+- DTOs could be generated automatically via Swagger, but here they're written by hand for simplicity.
+- Auth could be added, but the focus is on business logic only.
+
+## Rationale
+
+- Folder structure and DTO usage are NestJS best practices, making the codebase easier to maintain and extend.
+- Async queue shows how to process transactions outside the main request thread.
+- Logic is kept as simple and transparent as possible for easy modification.
